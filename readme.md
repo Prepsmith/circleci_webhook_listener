@@ -7,7 +7,9 @@
 ```
 {
 	"circle_ci_token": "{your circleCI token}",
-	"circle_ci_url": "https://circleci.com/api/v1.1/project/{vcs}/{team}/{projName}/"
+	"circle_ci_url": "https://circleci.com/api/v1.1/project/{vcs}/{team}/{projName}/",
+	"port": 3123,
+	"download_path": "{cwd}/downloads" // {cwd} will be automtaically replaced with current_working_directory
 }
 ```
 

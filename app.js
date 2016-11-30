@@ -10,17 +10,38 @@ var progress = require('request-progress');
 var bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
-var PORT = 3123
-
 var APK_EXTENSION = '.apk'
-var DOWNLOAD_PATH = '\\downloads\\'
+var DEFAULT_DOWNLOAD_PATH = process.cwd() + '\\downloads\\'
 
 var APK_DOWNLOAD_PREFIX = 'APK download'
 var DECIMALS = 2
 
-app.listen(PORT, function () {
-  console.log('Waiting for webhooks from CircleCI on port ' + PORT)
-})
+var settings = {}
+
+var DEFAULT_PORT = 3000
+var SETTINGS_FILE_PATH = '/settings.json'
+
+//on start
+fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
+    if (err) { return console.log(err) }
+    settings = JSON.parse(data);
+    if (!settings.circle_ci_token){throw new Error('field \"circle_ci_token\" was not found in settings.json')}
+    if (!settings.circle_ci_url){throw new Error('field \"circle_ci_url\" was not found in settings.json')}
+    if (!settings.port){
+        console.log('port field was not found in settings.json, using ' + DEFAULT_PORT + ' as default') 
+        settings.port = DEFAULT_PORT
+    }
+    if (!settings.download_path){
+        console.log('download_path field was not found in settings.json, using\n' + DEFAULT_DOWNLOAD_PATH + '\nas default') 
+        settings.download_path = DEFAULT_DOWNLOAD_PATH
+    } else {
+        settings.download_path = settings.download_path.replace(/{cwd}/g, process.cwd())
+    }
+    console.log('successfully loaded settings')
+    app.listen(3123, function () {
+        console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
+    })
+});
 
 var HTTP_SUCCES = 200
 var HTTP_INTERNAL_SERVER_ERROR = 500
@@ -61,7 +82,7 @@ var appendToken = function(url){
     if (url == null || url.length == 0){throw new Error('url is null')};
     if (!url.startsWith(HTTPS_PREFIX)){throw new Error('url \'' + url + '\' doesn\'t start with correct https prefix')};
     
-    return url + '?circle-token=' + TOKEN
+    return url + '?circle-token=' + settings.circle_ci_token
 }
 exports.appendToken = appendToken
 
@@ -69,7 +90,7 @@ var obtainArtifactsUrl = function(buildNumber){
     if (buildNumber == null){throw new Error('buildNumber is null')}
     if (typeof buildNumber != 'number'){throw new Error('buildNumber ' + buildNumber + ' is not a number')}
 
-    return appendToken(CIRCLE_CI_URL + buildNumber + '/artifacts')
+    return appendToken(settings.circle_ci_url + buildNumber + '/artifacts')
 }
 exports.obtainArtifactsUrl = obtainArtifactsUrl
 
