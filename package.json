@@ -1,0 +1,28 @@
+{
+  "name": "pad_sales_tool_webhook",
+  "version": "0.1.0",
+  "description": "Node express application that listens to CircleCI webhooks and downloads the generated artifacts",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "1.15.2",
+    "express": "4.14.0",
+    "mocha": "^3.2.0",
+    "remove": "^0.1.5",
+    "request": "2.79.0",
+    "request-progress": "2.0.1",
+    "requestify": "0.2.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prepsmith/circleci_webhook_listener.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Prepsmith/circleci_webhook_listener/issues"
+  },
+  "homepage": "https://github.com/Prepsmith/circleci_webhook_listener#readme",
+  "scripts": {
+    "test": "mocha"
+  }
+}
