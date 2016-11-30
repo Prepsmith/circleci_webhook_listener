@@ -11,7 +11,7 @@ var bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
 var APK_EXTENSION = '.apk'
-var DOWNLOAD_PATH = '\\downloads\\'
+var DEFAULT_DOWNLOAD_PATH = process.cwd() + '\\downloads\\'
 
 var APK_DOWNLOAD_PREFIX = 'APK download'
 var DECIMALS = 2
@@ -30,6 +30,12 @@ fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
     if (!settings.port){
         console.log('port field was not found in settings.json, using ' + DEFAULT_PORT + ' as default') 
         settings.port = DEFAULT_PORT
+    }
+    if (!settings.download_path){
+        console.log('download_path field was not found in settings.json, using\n' + DEFAULT_DOWNLOAD_PATH + '\nas default') 
+        settings.download_path = DEFAULT_DOWNLOAD_PATH
+    } else {
+        settings.download_path = settings.download_path.replace(/{cwd}/g, process.cwd())
     }
     console.log('successfully loaded settings')
     app.listen(3123, function () {
