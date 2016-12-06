@@ -52,21 +52,26 @@ app.post('/webhook', function(req, res){
         artifactsUrl.obtain(build_number,function(err,artifactsUrl){
             if (err) {throw err};
             console.log('build ' + build_number + ' status: ' + status)
-            requestify.get(artifactsUrl).then(function(response) {
-                getUrlFromBody(JSON.parse(response.getBody()),function(err,body_url){
-                    if (err) {throw err};
-                    apkPath.obtain(body_url, function(err,apkPath){
+            if (status != 'failed'){
+                console.log('downloading ' + build_number + ' as build succeeded.')
+                requestify.get(artifactsUrl).then(function(response) {
+                    getUrlFromBody(JSON.parse(response.getBody()),function(err,body_url){
                         if (err) {throw err};
-                        token.append(body_url,function(err,download_url){
+                        apkPath.obtain(body_url, function(err,apkPath){
                             if (err) {throw err};
-                            console.log('starting download of ' + apkPath)
-                            download.start('APK ' + build_number, download_url, apkPath, true);
+                            token.append(body_url,function(err,download_url){
+                                if (err) {throw err};
+                                console.log('starting download of ' + apkPath)
+                                download.start('APK ' + build_number, download_url, apkPath, true);
+                            });
                         });
                     });
+                }).fail(function(response) {
+                    console.log('error caught: ' + response)
                 });
-            }).fail(function(response) {
-                console.log('error caught: ' + response)
-            });
+            } else {
+                console.log('not downloading ' + build_number + ' as build failed.')
+            }
             res.status(HTTP_SUCCES);
             res.send();
         });
