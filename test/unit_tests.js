@@ -77,7 +77,7 @@ describe('WebHook unit tests', function() {
     describe('Download', function() {
         it('downloads sample http file', function(done) {
             appTest.download('http://www.brainjar.com/java/host/test.html',process.cwd() + DOWNLOAD_DIR + '/test.html', LOG_OUTPUT, function(succes){
-                assert(succes,"failed to download bing.com");
+                assert(succes,"failed to download bing.com, please check internet connectivity");
                 done();
             });
         });
