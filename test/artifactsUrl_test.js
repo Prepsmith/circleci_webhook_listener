@@ -2,6 +2,12 @@ var assert = require('assert');
 var artifactsUrl = require('../src/artifactsUrl');
 
 describe('obtainArtifactsUrl', function() {
+
+    before(function(){
+        settings = {}
+        settings.circle_ci_url = 'https://testCircle.ci.url/';
+    })
+
 	it('works with correct input', function() {
 	   artifactsUrl.obtain(127,function(err,res){
             assert(!err,err)
