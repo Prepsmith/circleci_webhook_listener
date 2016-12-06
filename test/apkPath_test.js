@@ -11,6 +11,7 @@ describe('apkPath', function() {
     	apkPath.obtain('https://correctUrl.com/test/apk/applicationName.apk',function(err,appPath){
             assert(!err,err)
             assert(appPath,'returned appPath was empty')
+            assert(typeof(appPath) == 'string', "returned app path was not a string but " + typeof(appPath))
             assert(appPath.endsWith('applicationName.apk'),'returned appPath had different app name' + appPath)
        });
     });
