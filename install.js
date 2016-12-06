@@ -26,26 +26,30 @@ var promptUser = function(callback){
 		    name: 'token',
 	    	description: 'Please enter your CircleCI token.',
 	    	type: 'string',
-        	required: true
+        	required: true,
+        	default: 'TOKEN'
 	    },
 	    {
 		    name: 'vcs',
 	    	description: 'Version control system, can either be github or bitbucket.',
 			validator: /github|bitbucket/,
 			warning: "can only be \"github\" or \"bitbucket\"",
-        	required: true
+        	required: true,
+        	default: 'github'
 	    },
 	    {
 		    name: 'team',
 	    	description: 'Team name of the circle ci project.',
 	    	type: 'string',
-        	required: true
+        	required: true,
+        	default: 'TEAM'
 	    },
 	    {
 		    name: 'projName',
 	    	description: 'Project name of the circle ci project.',
 	    	type: 'string',
-        	required: true
+        	required: true,
+        	default: 'PROJECT_NAME'
 	    },
 	    {
 		    name: 'port',
@@ -58,7 +62,8 @@ var promptUser = function(callback){
 		    name: 'downloadPath',
 	    	description: 'Where to store downloaded artifacts, {cwd} will be replaced with the working directory of the project.',
 	    	type: 'string',
-        	required: true
+        	required: true,
+        	default: '{cwd}/downloads/'
 	    }
 	];
 	prompt.start();
