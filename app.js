@@ -55,7 +55,7 @@ app.post('/webhook', function(req, res){
             requestify.get(artifactsUrl).then(function(response) {
                 getUrlFromBody(JSON.parse(response.getBody()),function(err,body_url){
                     if (err) {throw err};
-                    apkPath.obtain(body_url,settings.download_path, function(err,apkPath){
+                    apkPath.obtain(body_url, function(err,apkPath){
                         if (err) {throw err};
                         token.append(body_url,function(err,download_url){
                             if (err) {throw err};

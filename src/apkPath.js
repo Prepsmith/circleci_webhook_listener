@@ -15,5 +15,5 @@ exports.obtain = function(url, callback){
         if (err && err.code != 'EEXIST'){ throw err}
     });
 
-    callback(null,settings.download_path + fileName)
+    callback(null,settings.download_path + '\\' + fileName)
 }
