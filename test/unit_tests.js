@@ -17,7 +17,9 @@ describe('WebHook unit tests', function() {
 
     describe('AppendToken', function() {
     	it('works with correct input', function() {
-    	   appTest.appendToken('https://correct.url/');
+    	   appTest.appendToken('https://correct.url/',function(err,res){
+                assert(!err)
+           });
         });
         it('doesn\'t work when there is no https', function() {
         	assert.throws(function(){ 
@@ -36,7 +38,9 @@ describe('WebHook unit tests', function() {
 
     describe('obtainArtifactsUrl', function() {
     	it('works with correct input', function() {
-    	   appTest.obtainArtifactsUrl(127);
+    	   appTest.obtainArtifactsUrl(127,function(err,res){
+                assert(!err)
+           });
         });
         it('doesn\'t work when there is no build number', function() {
         	assert.throws(function(){ 
@@ -50,8 +54,10 @@ describe('WebHook unit tests', function() {
 
     describe('obtainAPKpath', function() {
     	it('works with correct input', function() {
-        	var appPath = appTest.obtainAPKpath('https://correctUrl.com/test/apk/applicationName.apk');
-        	assert(appPath.endsWith('applicationName.apk'),'returned appPath had different app name' + appPath)
+        	 appTest.obtainAPKpath('https://correctUrl.com/test/apk/applicationName.apk',function(err,appPath){
+                assert(!err)
+                assert(appPath.endsWith('applicationName.apk'),'returned appPath had different app name' + appPath)
+           });
         });
         it('doesn\'t work when there is no url', function() {
         	assert.throws(function(){ 

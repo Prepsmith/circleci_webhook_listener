@@ -1,6 +1,8 @@
 var express = require('express')
 var app = express()
 
+var promise = require('promise');
+
 var requestify = require('requestify');
 var http = require('http');
 var fs = require('fs');
@@ -22,6 +24,7 @@ var DEFAULT_PORT = 3000
 var SETTINGS_FILE_PATH = '/settings.json'
 
 //on start
+console.log("loading settings from settings.json")
 fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
     if (err) { return console.log(err) }
     settings = JSON.parse(data);
@@ -38,7 +41,7 @@ fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
         settings.download_path = settings.download_path.replace(/{cwd}/g, process.cwd())
     }
     console.log('successfully loaded settings')
-    app.listen(3123, function () {
+    app.listen(settings.port, function () {
         console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
     })
 });
@@ -52,23 +55,21 @@ app.post('/webhook', function(req, res){
 
         var status = req.body.status
         var build_number = req.body.build_num
-        var artifactsUrl = obtainArtifactsUrl(build_number)
-
-        console.log('build ' + build_number + ' status: ' + status)
-
-        requestify.get(artifactsUrl).then(function(response) {
-            var body = JSON.parse(response.getBody());
-            var body_url = body[0].url
-            var apkPath = obtainAPKpath(body_url);
-            var download_url = appendToken(body_url);
-
-            console.log('starting download of ' + apkPath)
-
-            download(download_url, apkPath, true);
+        obtainArtifactsUrl(build_number,function(err,artifactsUrl){
+            console.log('build ' + build_number + ' status: ' + status)
+            requestify.get(artifactsUrl).then(function(response) {
+                var body = JSON.parse(response.getBody());
+                var body_url = body[0].url
+                obtainAPKpath(body_url,function(err,apkPath){
+                    appendToken(body_url,function(err,download_url){
+                    console.log('starting download of ' + apkPath)
+                    download(download_url, apkPath, true);
+                    });
+                });
+            });
+            res.status(HTTP_SUCCES);
+            res.send();
         });
-
-        res.status(HTTP_SUCCES);
-        res.send();
     } catch (err) {
         console.log('caught error', err)
         res.status(HTTP_INTERNAL_SERVER_ERROR);
@@ -78,23 +79,25 @@ app.post('/webhook', function(req, res){
 
 var HTTPS_PREFIX = 'https://'
 
-var appendToken = function(url){
+var appendToken = function(url,callback){
     if (url == null || url.length == 0){throw new Error('url is null')};
     if (!url.startsWith(HTTPS_PREFIX)){throw new Error('url \'' + url + '\' doesn\'t start with correct https prefix')};
     
-    return url + '?circle-token=' + settings.circle_ci_token
+    callback(null,url + '?circle-token=' + settings.circle_ci_token)
 }
 exports.appendToken = appendToken
 
-var obtainArtifactsUrl = function(buildNumber){
+var obtainArtifactsUrl = function(buildNumber,callback){
     if (buildNumber == null){throw new Error('buildNumber is null')}
     if (typeof buildNumber != 'number'){throw new Error('buildNumber ' + buildNumber + ' is not a number')}
-
-    return appendToken(settings.circle_ci_url + buildNumber + '/artifacts')
+    appendToken(settings.circle_ci_url + buildNumber + '/artifacts',function(err,res) {
+        if (err) {callback(err)} 
+        else {callback(null,res)}
+    });
 }
 exports.obtainArtifactsUrl = obtainArtifactsUrl
 
-var obtainAPKpath = function(url){
+var obtainAPKpath = function(url,callback){
     if (url == null || url.length == 0){throw new Error('url is null')}
     if (url.indexOf(APK_EXTENSION) == -1){throw new Error('url ' + url + ' doesn\'t contain an apk file')}
     var matches = url.match('apk/(.*)' + APK_EXTENSION)
@@ -102,13 +105,12 @@ var obtainAPKpath = function(url){
     if (matches == null || matches.length < 1){throw new Error('url didn\t match regex')}
 
     var fileName = matches[1] + APK_EXTENSION
-    var downloadDir = process.cwd() + DOWNLOAD_PATH
     
-    fs.mkdir(downloadDir, null , function(err) {
+    fs.mkdir(settings.download_path, null , function(err) {
         if (err && err.code != 'EEXIST'){ throw err}
     });
 
-    return downloadDir + fileName
+    callback(null,settings.download_path + fileName)
 }
 exports.obtainAPKpath = obtainAPKpath
 
