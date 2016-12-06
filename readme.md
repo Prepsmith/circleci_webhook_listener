@@ -4,10 +4,13 @@
 1.	clone repository
 2.	navigate to root of repository
 3.	run "npm install"
-## start 
-1.	run "node app.js"
+## start
+1.	fill in correct settings in settings.json
+2.	navigate to root of repository
+3.	run "node app.js"
 ## test 
-1.	run "npm test"
+1.	navigate to root of repository
+2.	run "npm test"
 
 ## license
 The MIT License
