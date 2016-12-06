@@ -23,7 +23,8 @@
     "url": "https://github.com/Prepsmith/circleci_webhook_listener/issues"
   },
   "homepage": "https://github.com/Prepsmith/circleci_webhook_listener#readme",
-  "scripts": {
-    "test": "mocha"
+  "scripts" : {
+    "test": "mocha",
+    "install" : "node install.js"
   }
 }
