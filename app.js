@@ -25,10 +25,10 @@ var SETTINGS_FILE_PATH = '/settings.json'
 
 var loadSettings = function(callback){
     fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
-        if (err) { return console.log(err) }
+        if (err) { callback(err) }
         res = JSON.parse(data);
-        if (!res.circle_ci_token){throw new Error('field \"circle_ci_token\" was not found in settings.json')}
-        if (!res.circle_ci_url){throw new Error('field \"circle_ci_url\" was not found in settings.json')}
+        if (!res.circle_ci_token){callback(new Error('field \"circle_ci_token\" was not found in settings.json'))}
+        if (!res.circle_ci_url){callback(new Error('field \"circle_ci_url\" was not found in settings.json'))}
         if (!res.port){
             console.log('port field was not found in settings.json, using ' + DEFAULT_PORT + ' as default') 
             res.port = DEFAULT_PORT
@@ -46,12 +46,16 @@ var loadSettings = function(callback){
 
 //on start
 console.log("loading settings from settings.json")
-loadSettings(function(err,res){
-    settings = res;
-    app.listen(settings.port, function () {
-        console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
+try{
+    loadSettings(function(err,res){
+        settings = res;
+        app.listen(settings.port, function () {
+            console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
+        });
     });
-});
+} catch(err){
+    throw err;
+}
 
 var HTTP_SUCCES = 200
 var HTTP_INTERNAL_SERVER_ERROR = 500
