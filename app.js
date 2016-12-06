@@ -23,27 +23,34 @@ var settings = {}
 var DEFAULT_PORT = 3000
 var SETTINGS_FILE_PATH = '/settings.json'
 
+var loadSettings = function(callback){
+    fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
+        if (err) { return console.log(err) }
+        res = JSON.parse(data);
+        if (!res.circle_ci_token){throw new Error('field \"circle_ci_token\" was not found in settings.json')}
+        if (!res.circle_ci_url){throw new Error('field \"circle_ci_url\" was not found in settings.json')}
+        if (!res.port){
+            console.log('port field was not found in settings.json, using ' + DEFAULT_PORT + ' as default') 
+            res.port = DEFAULT_PORT
+        }
+        if (!res.download_path){
+            console.log('download_path field was not found in settings.json, using\n' + DEFAULT_DOWNLOAD_PATH + '\nas default') 
+            res.download_path = DEFAULT_DOWNLOAD_PATH
+        } else {
+            res.download_path = res.download_path.replace(/{cwd}/g, process.cwd())
+        }
+        console.log('successfully loaded settings');
+        callback(null,res);
+    });
+};
+
 //on start
 console.log("loading settings from settings.json")
-fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
-    if (err) { return console.log(err) }
-    settings = JSON.parse(data);
-    if (!settings.circle_ci_token){throw new Error('field \"circle_ci_token\" was not found in settings.json')}
-    if (!settings.circle_ci_url){throw new Error('field \"circle_ci_url\" was not found in settings.json')}
-    if (!settings.port){
-        console.log('port field was not found in settings.json, using ' + DEFAULT_PORT + ' as default') 
-        settings.port = DEFAULT_PORT
-    }
-    if (!settings.download_path){
-        console.log('download_path field was not found in settings.json, using\n' + DEFAULT_DOWNLOAD_PATH + '\nas default') 
-        settings.download_path = DEFAULT_DOWNLOAD_PATH
-    } else {
-        settings.download_path = settings.download_path.replace(/{cwd}/g, process.cwd())
-    }
-    console.log('successfully loaded settings')
+loadSettings(function(err,res){
+    settings = res;
     app.listen(settings.port, function () {
         console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
-    })
+    });
 });
 
 var HTTP_SUCCES = 200
@@ -52,7 +59,6 @@ var HTTP_INTERNAL_SERVER_ERROR = 500
 app.post('/webhook', function(req, res){
     try{
         console.log('Obtained notification from CircleCI')
-
         var status = req.body.status
         var build_number = req.body.build_num
         obtainArtifactsUrl(build_number,function(err,artifactsUrl){
