@@ -2,9 +2,15 @@ var assert = require('assert');
 var token = require('../src/token');
 
 describe('AppendToken', function() {
+
+    before(function(){
+        settings = {}
+        settings.circle_ci_token = 'TEST_TOKEN';
+    })
+
 	it('works with correct input', function() {
 	   token.append('https://correct.url/',function(err,res){
-            assert(!err)
+            assert(!err,err)
        });
     });
     it('doesn\'t work when there is no https', function() {

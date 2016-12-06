@@ -2,10 +2,11 @@ var assert = require('assert');
 var apkPath = require('../src/apkPath');
 
 describe('apkPath', function() {
-    var downloadPath = process.cwd() + '\\test\\downloads'
+    var downloadPath = process.cwd() + '\\test\\downloads\\'
 	it('obtain works with correct input', function() {
     	apkPath.obtain('https://correctUrl.com/test/apk/applicationName.apk',downloadPath,function(err,appPath){
-            assert(!err)
+            assert(!err,err)
+            assert(appPath,'returned appPath was empty')
             assert(appPath.endsWith('applicationName.apk'),'returned appPath had different app name' + appPath)
        });
     });

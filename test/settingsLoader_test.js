@@ -19,7 +19,7 @@ describe('Settings', function(){
 
     it('will default to default port', function(done) {
         settingsLoader.load('/test/settings/noPort.json',function(err,res){
-            if (err){throw err}
+            assert(!err,err)
             assert(res.port == settingsLoader.DEFAULT_PORT,'default ports didn\' match ' + res.port + ' and ' + settingsLoader.DEFAULT_PORT);
             done();
         });
@@ -27,7 +27,7 @@ describe('Settings', function(){
 
     it('will default to default download path', function(done) {
         settingsLoader.load('/test/settings/noPath.json',function(err,res){
-            if (err){throw err}
+            assert(!err,err)
             assert(res.download_path == settingsLoader.DEFAULT_DOWNLOAD_PATH,'default ports didn\' match ' + res.download_path + ' and ' + settingsLoader.DEFAULT_DOWNLOAD_PATH);
             done();
         });
