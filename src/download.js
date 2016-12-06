@@ -5,41 +5,41 @@ var progress = require('request-progress');
 
 var KB_SIZE = 1000
 var MB_SIZE = KB_SIZE * 1000
-var APK_DOWNLOAD_PREFIX = 'APK download'
+var DEFAULT_PREFIX = 'APK download'
 var DECIMALS = 2
 
-exports.start = function (uri, path, log, callback) {
+exports.start = function (prefix, uri, path, log, callback) {
 
     if (uri == null || uri.length == 0){throw new Error('uri is null'); callback(false); return;}
     if (path == null || path.length == 0){throw new Error('path is null'); callback(false); return;}
     if (typeof uri != 'string'){throw new Error('uri is not a string ' + uri); callback(false); return;}
     if (typeof path != 'string'){throw new Error('path is not a string ' + path); callback(false); return;}
-
+    if (!prefix){prefix = DEFAULT_PREFIX}
     progress(request(uri))
     .on('progress', 
         function (state) {
-            if(log){console.log(formatState(state))}
+            if(log){console.log(formatState(prefix,state))}
         })
     .on('response', 
         function (response) {
-            if(log){console.log(APK_DOWNLOAD_PREFIX + ' status code:', response.statusCode)}
+            if(log){console.log(prefix + ' status code:', response.statusCode)}
         })
     .on('error', 
         function (error) {
-            if(log){console.log(APK_DOWNLOAD_PREFIX + ' error:', error)}
+            if(log){console.log(prefix + ' error:', error)}
             callback(false)
         })
     .on('end', 
         function () {
-            if(log){console.log(APK_DOWNLOAD_PREFIX + ' finished downloading ' + path)}
+            if(log){console.log(prefix + ' finished downloading ' + path)}
             callback(true)
         })
     .pipe(fs.createWriteStream(path))
 };
 
-var formatState = function(state){
-    return APK_DOWNLOAD_PREFIX + 
-    ' elapsed: ' + 
+var formatState = function(prefix,state){
+    return prefix + 
+    '\telapsed: ' + 
     round_dec(state.time.elapsed,DECIMALS) +
     ' s\tspeed: ' + 
     round_dec(state.speed/KB_SIZE,DECIMALS)+ 

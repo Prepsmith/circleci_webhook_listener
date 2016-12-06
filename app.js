@@ -60,7 +60,7 @@ app.post('/webhook', function(req, res){
                         token.append(body_url,function(err,download_url){
                             if (err) {throw err};
                             console.log('starting download of ' + apkPath)
-                            download.start(download_url, apkPath, true);
+                            download.start('APK ' + build_number, download_url, apkPath, true);
                         });
                     });
                 });
