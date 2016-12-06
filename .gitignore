@@ -41,3 +41,4 @@ downloads/
 
 # Settings
 settings.json
+*.apk
