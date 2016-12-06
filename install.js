@@ -69,7 +69,9 @@ var promptUser = function(callback){
 	prompt.start();
 	prompt.get(properties, function (err, result) {
 	    callback(err,result)
+    	return 0;
 	});
+    return 0;
 }
 
 fs.stat(SETTINGS_FILE_PATH,function(err,stats){
