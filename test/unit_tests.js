@@ -112,15 +112,53 @@ describe('WebHook unit tests', function() {
     });
 
     describe('Settings', function(){
+        
         it('can load settings', function(done) {
-            appTest.loadSettings(function(err,res){
-                assert(!err);
+            appTest.loadSettings('/test/settings/correct.json',function(err,res){
+                if (err){ throw err}
                 assert(res.port);
                 assert(res.circle_ci_token);
                 assert(res.circle_ci_url);
                 assert(res.download_path);
                 done();
-            })
+            });
+        });
+
+        it('will default to default port', function(done) {
+            appTest.loadSettings('/test/settings/noPort.json',function(err,res){
+                if (err){throw err}
+                assert(res.port == appTest.DEFAULT_PORT,'default ports didn\' match ' + res.port + ' and ' + appTest.DEFAULT_PORT);
+                done();
+            });
+        });
+
+        it('will default to default download path', function(done) {
+            appTest.loadSettings('/test/settings/noPath.json',function(err,res){
+                if (err){throw err}
+                assert(res.download_path == appTest.DEFAULT_DOWNLOAD_PATH,'default ports didn\' match ' + res.download_path + ' and ' + appTest.DEFAULT_DOWNLOAD_PATH);
+                done();
+            });
+        });
+
+        it('won\'t accept empty settings', function(done) {
+            appTest.loadSettings('/test/settings/empty.json',function(err,res){
+                if (!err){throw new Error('accepted empty settings file')}
+                done();
+            });
+        });
+
+        it('won\'t accept missing or empty token', function(done) {
+            appTest.loadSettings('/test/settings/noToken.json',function(err,res){
+                if (!err){throw new Error('accepted settings file without token')}
+                done();
+            });
+        });
+
+        it('won\'t accept missing or empty url', function(done) {
+            appTest.loadSettings('/test/settings/noUrl.json',function(err,res){
+                if (!err){throw new Error('accepted settings file without url')}
+                done();
+            });
         });
     });
 

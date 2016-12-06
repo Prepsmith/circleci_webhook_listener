@@ -1,0 +1,5 @@
+{
+	"circle_ci_token": "randomToken",
+	"port": 3124,
+	"download_path": "{cwd}\\downloads"
+}

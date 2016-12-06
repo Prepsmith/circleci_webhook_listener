@@ -1,0 +1,6 @@
+{
+	"circle_ci_token": "randomToken",
+	"circle_ci_url": "https://circleci.com/api/v1.1/project/github/compName/projName/",
+	"port": 3124,
+	"download_path": "{cwd}\\downloads"
+}

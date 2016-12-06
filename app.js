@@ -14,6 +14,7 @@ app.use(bodyParser.json())
 
 var APK_EXTENSION = '.apk'
 var DEFAULT_DOWNLOAD_PATH = process.cwd() + '\\downloads\\'
+exports.DEFAULT_DOWNLOAD_PATH = DEFAULT_DOWNLOAD_PATH
 
 var APK_DOWNLOAD_PREFIX = 'APK download'
 var DECIMALS = 2
@@ -21,10 +22,12 @@ var DECIMALS = 2
 var settings = {}
 
 var DEFAULT_PORT = 3000
+exports.DEFAULT_PORT = DEFAULT_PORT
+
 var SETTINGS_FILE_PATH = '/settings.json'
 
-var loadSettings = function(callback){
-    fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
+var loadSettings = function(settingsPath, callback){
+    fs.readFile(process.cwd() + settingsPath, 'utf8', function (err,data) {
         if (err) { callback(err) }
         res = JSON.parse(data);
         if (!res.circle_ci_token){callback(new Error('field \"circle_ci_token\" was not found in settings.json'))}
@@ -48,7 +51,7 @@ exports.loadSettings = loadSettings
 //on start
 console.log("loading settings from settings.json")
 try{
-    loadSettings(function(err,res){
+    loadSettings(SETTINGS_FILE_PATH,function(err,res){
         settings = res;
         app.listen(settings.port, function () {
             console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
