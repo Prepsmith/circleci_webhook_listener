@@ -58,8 +58,8 @@ try{
             console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
         });
     });
-} catch(err){
-    throw err;
+} catch (err) {
+    console.log('caught error', err);
 }
 
 var HTTP_SUCCES = 200
