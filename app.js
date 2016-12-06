@@ -22,6 +22,7 @@ var DEFAULT_PORT = 3000
 var SETTINGS_FILE_PATH = '/settings.json'
 
 //on start
+console.log("loading settings from settings.json")
 fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
     if (err) { return console.log(err) }
     settings = JSON.parse(data);
@@ -38,7 +39,7 @@ fs.readFile(process.cwd() + SETTINGS_FILE_PATH, 'utf8', function (err,data) {
         settings.download_path = settings.download_path.replace(/{cwd}/g, process.cwd())
     }
     console.log('successfully loaded settings')
-    app.listen(3123, function () {
+    app.listen(settings.port, function () {
         console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
     })
 });
