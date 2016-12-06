@@ -43,6 +43,7 @@ var loadSettings = function(callback){
         callback(null,res);
     });
 };
+exports.loadSettings = loadSettings
 
 //on start
 console.log("loading settings from settings.json")

@@ -75,8 +75,8 @@ describe('WebHook unit tests', function() {
     });
 
     describe('Download', function() {
-        it('downloads bing', function(done) {
-            appTest.download('https://bing.com/',process.cwd() + DOWNLOAD_DIR + '/bing.html', LOG_OUTPUT, function(succes){
+        it('downloads sample http file', function(done) {
+            appTest.download('http://www.brainjar.com/java/host/test.html',process.cwd() + DOWNLOAD_DIR + '/test.html', LOG_OUTPUT, function(succes){
                 assert(succes,"failed to download bing.com");
                 done();
             });
@@ -108,6 +108,19 @@ describe('WebHook unit tests', function() {
                     done();
                 });
             }, Error,'download allowed a download without uri');
+        });
+    });
+
+    describe('Settings', function(){
+        it('can load settings', function(done) {
+            appTest.loadSettings(function(err,res){
+                assert(!err);
+                assert(res.port);
+                assert(res.circle_ci_token);
+                assert(res.circle_ci_url);
+                assert(res.download_path);
+                done();
+            })
         });
     });
 
