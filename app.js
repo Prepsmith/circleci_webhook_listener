@@ -64,20 +64,32 @@ try{
 var HTTP_SUCCES = 200
 var HTTP_INTERNAL_SERVER_ERROR = 500
 
+var getUrlFromBody = function(body,callback){
+    if (!body){callback(new Error('body was a null, body:' + body)); return;}
+    if (!body[0]){callback(new Error('no apk file was found in body, body:' + body)); return;}
+    if (!body[0].url){callback(new Error('no url found for apk, body:' + body)); return;}
+    if (!body[0].url.startsWith(HTTPS_PREFIX)){callback(new Error('url \'' + url + '\' doesn\'t start with correct https prefix, body:' + body)); return;};
+    callback(null,body[0].url)
+}
+
 app.post('/webhook', function(req, res){
     try{
         console.log('Obtained notification from CircleCI')
         var status = req.body.status
         var build_number = req.body.build_num
         obtainArtifactsUrl(build_number,function(err,artifactsUrl){
+            if (err) {throw err};
             console.log('build ' + build_number + ' status: ' + status)
             requestify.get(artifactsUrl).then(function(response) {
-                var body = JSON.parse(response.getBody());
-                var body_url = body[0].url
-                obtainAPKpath(body_url,function(err,apkPath){
-                    appendToken(body_url,function(err,download_url){
-                    console.log('starting download of ' + apkPath)
-                    download(download_url, apkPath, true);
+                getUrlFromBody(JSON.parse(response.getBody()),function(err,body_url){
+                    if (err) {throw err};
+                    obtainAPKpath(body_url,function(err,apkPath){
+                        if (err) {throw err};
+                        appendToken(body_url,function(err,download_url){
+                            if (err) {throw err};
+                            console.log('starting download of ' + apkPath)
+                            download(download_url, apkPath, true);
+                        });
                     });
                 });
             });
@@ -94,16 +106,16 @@ app.post('/webhook', function(req, res){
 var HTTPS_PREFIX = 'https://'
 
 var appendToken = function(url,callback){
-    if (url == null || url.length == 0){throw new Error('url is null')};
-    if (!url.startsWith(HTTPS_PREFIX)){throw new Error('url \'' + url + '\' doesn\'t start with correct https prefix')};
+    if (url == null || url.length == 0){callback(new Error('url is null')); return;};
+    if (!url.startsWith(HTTPS_PREFIX)){callback(new Error('url \'' + url + '\' doesn\'t start with correct https prefix')); return;};
     
     callback(null,url + '?circle-token=' + settings.circle_ci_token)
 }
 exports.appendToken = appendToken
 
 var obtainArtifactsUrl = function(buildNumber,callback){
-    if (buildNumber == null){throw new Error('buildNumber is null')}
-    if (typeof buildNumber != 'number'){throw new Error('buildNumber ' + buildNumber + ' is not a number')}
+    if (buildNumber == null){callback(new Error('buildNumber is null')); return;}
+    if (typeof buildNumber != 'number'){callback(new Error('buildNumber ' + buildNumber + ' is not a number')); return;}
     appendToken(settings.circle_ci_url + buildNumber + '/artifacts',function(err,res) {
         if (err) {callback(err)} 
         else {callback(null,res)}
@@ -112,11 +124,11 @@ var obtainArtifactsUrl = function(buildNumber,callback){
 exports.obtainArtifactsUrl = obtainArtifactsUrl
 
 var obtainAPKpath = function(url,callback){
-    if (url == null || url.length == 0){throw new Error('url is null')}
-    if (url.indexOf(APK_EXTENSION) == -1){throw new Error('url ' + url + ' doesn\'t contain an apk file')}
+    if (url == null || url.length == 0){callback(new Error('url is null')); return;}
+    if (url.indexOf(APK_EXTENSION) == -1){callback(new Error('url ' + url + ' doesn\'t contain an apk file')); return;}
     var matches = url.match('apk/(.*)' + APK_EXTENSION)
 
-    if (matches == null || matches.length < 1){throw new Error('url didn\t match regex')}
+    if (matches == null || matches.length < 1){callback(new Error('url didn\t match regex')); return;}
 
     var fileName = matches[1] + APK_EXTENSION
     
