@@ -52,6 +52,7 @@ exports.loadSettings = loadSettings
 console.log("loading settings from settings.json")
 try{
     loadSettings(SETTINGS_FILE_PATH,function(err,res){
+        if(err){throw err};
         settings = res;
         app.listen(settings.port, function () {
             console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
