@@ -117,9 +117,13 @@ describe('WebHook unit tests', function() {
             appTest.loadSettings('/test/settings/correct.json',function(err,res){
                 if (err){ throw err}
                 assert(res.port);
+                assert(typeof(res.port) == 'number');
                 assert(res.circle_ci_token);
+                assert(typeof(res.circle_ci_token) == 'string');
                 assert(res.circle_ci_url);
+                assert(typeof(res.circle_ci_url) == 'string');
                 assert(res.download_path);
+                assert(typeof(res.download_path) == 'string');
                 done();
             });
         });
