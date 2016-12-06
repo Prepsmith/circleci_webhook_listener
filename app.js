@@ -28,10 +28,10 @@ var SETTINGS_FILE_PATH = '/settings.json'
 
 var loadSettings = function(settingsPath, callback){
     fs.readFile(process.cwd() + settingsPath, 'utf8', function (err,data) {
-        if (err) { callback(err) }
+        if (err) { callback(err); return;}
         res = JSON.parse(data);
-        if (!res.circle_ci_token){callback(new Error('field \"circle_ci_token\" was not found in settings.json'))}
-        if (!res.circle_ci_url){callback(new Error('field \"circle_ci_url\" was not found in settings.json'))}
+        if (!res.circle_ci_token){callback(new Error('field \"circle_ci_token\" was not found in settings.json')); return;}
+        if (!res.circle_ci_url){callback(new Error('field \"circle_ci_url\" was not found in settings.json')); return;}
         if (!res.port){
             console.log('port field was not found in settings.json, using ' + DEFAULT_PORT + ' as default') 
             res.port = DEFAULT_PORT
@@ -149,10 +149,10 @@ var round_dec = function(value,decimals){
 
 var download = function (uri, path, log, callback) {
 
-    if (uri == null || uri.length == 0){throw new Error('uri is null'); callback(false);}
-    if (path == null || path.length == 0){throw new Error('path is null'); callback(false);}
-    if (typeof uri != 'string'){throw new Error('uri is not a string ' + uri); callback(false);}
-    if (typeof path != 'string'){throw new Error('path is not a string ' + path); callback(false);}
+    if (uri == null || uri.length == 0){throw new Error('uri is null'); callback(false); return;}
+    if (path == null || path.length == 0){throw new Error('path is null'); callback(false); return;}
+    if (typeof uri != 'string'){throw new Error('uri is not a string ' + uri); callback(false); return;}
+    if (typeof path != 'string'){throw new Error('path is not a string ' + path); callback(false); return;}
 
     progress(request(uri))
     .on('progress', 
