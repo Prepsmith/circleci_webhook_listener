@@ -35,7 +35,7 @@ test:
       - ./gradlew build
       - cp -r app/build/outputs/apk $CIRCLE_ARTIFACTS
 ```
-note: circle.yml only takes 2 spaces, not tabs
+**note: circle.yml only takes 2 spaces, not tabs**
 
 ## settings up settings.json
 ### circle_ci_token: 
@@ -46,11 +46,14 @@ This is where you place your API token, this can be obtained by going to circlec
 ### circle_ci_url:
 
 This is the URL of your circleCI project, it should have this format,
+```
 	"circle_ci_url": "https://circleci.com/api/v1.1/project/{VCS}/{TEAM_NAME}/{PROJECT_NAME}/.
-	VCS is the Version Control System used for this project, can either be "github" or "bitbucket"
-	TEAM_NAME is the name of the team this project was created under on CircleCI.
-	PROJECT_NAME is the name of the project on CircleCI.
-	TEAM_NAME and PROJECT_NAME can be found when browsing to your project on CircleCI and looking at te url, it should a format like this: "https://circleci.com/gh/{TEAM_NAME}/{PROJECT_NAME}"
+```
+*	VCS is the Version Control System used for this project, can either be "github" or "bitbucket"
+*	TEAM_NAME is the name of the team this project was created under on CircleCI.
+*	PROJECT_NAME is the name of the project on CircleCI.
+
+TEAM_NAME and PROJECT_NAME can be found when browsing to your project on CircleCI and looking at te url, it should a format like this: "https://circleci.com/gh/{TEAM_NAME}/{PROJECT_NAME}"
 
 ### port:
 
@@ -58,7 +61,8 @@ This is the port that the webhook listener will listen to, this is the same port
 
 ### download_path:
 
-This is the path the webhook listener will download the obtained artifacts to.
-	In this you can use "{cwd}", this will be replaced with the root directory of the webhook listener project, for example:
-	"download_path": "{cwd}/downloads/"
-	"download_path": "C:\Users\ThimoVSS\circleCIArtifacts"
+This is the path the webhook listener will download the obtained artifacts to. You can use "{cwd}", this will be replaced with the root directory of the webhook listener project, for example:
+```
+"download_path": "{cwd}/downloads/"
+"download_path": "C:\Users\ThimoVSS\circleCIArtifacts"
+```
