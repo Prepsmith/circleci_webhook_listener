@@ -13,3 +13,6 @@
 ## test 
 1.	navigate to root of repository
 2.	run "npm test"
+
+## setting up circleCI
+![CircleCIflow](https://github.com/Prepsmith/circleci_webhook_listener/blob/issue_11_documentation/docs/CircleCI%20flow.png)
