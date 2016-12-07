@@ -25,6 +25,6 @@
   "homepage": "https://github.com/Prepsmith/circleci_webhook_listener#readme",
   "scripts" : {
     "test": "mocha",
-    "install" : "node install.js"
+    "install" : "node scripts/install.js"
   }
 }
