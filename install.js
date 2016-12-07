@@ -16,7 +16,7 @@ var generateJson = function(ciToken,vcs,team,projName,port,downloadPath){
 	port +
 	',\n\t\"download_path\": \"' +
 	downloadPath +
-	"\" // \"{cwd}\" will be replaced with the current working directory\n}"
+	"\"\n}"
 }
 
 fs.stat(SETTINGS_FILE_PATH,function(err,stats){
