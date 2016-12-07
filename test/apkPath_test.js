@@ -1,10 +1,11 @@
 var assert = require('assert');
 var apkPath = require('../src/apkPath');
+var path = require('path');
 
 describe('apkPath', function() {
     before(function(){
         settings = {}
-        settings.download_path = process.cwd() + '\\test\\downloads';
+        settings.download_path = path.win32.join(process.cwd(),'\\test\\downloads');
     });
 
 	it('obtain works with correct input', function() {
