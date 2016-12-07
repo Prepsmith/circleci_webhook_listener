@@ -13,3 +13,17 @@
 ## test 
 1.	navigate to root of repository
 2.	run "npm test"
+
+## deploying from the ci
+
+example with codeship:
+
+```
+cd clone/
+npm pack
+PACKAGE=`ls pad_sales_tool_webhook-*.tgz`
+scp $PACKAGE deployer@cms.staging.prepsmith.com:
+npm install --production $PACKAGE
+```
+
+cnpm install  ./pad_sales_tool_webhook-1.0.0.tgz

@@ -1,8 +1,11 @@
 {
-  "name": "pad_sales_tool_webhook",
+  "name": "circleci_webhook_listener",
   "version": "0.3.0",
   "description": "Node express application that listens to CircleCI webhooks and downloads the generated artifacts",
   "main": "app.js",
+  "bin": {
+    "circleci_webhook_listener": "./scripts/runner"
+  },
   "dependencies": {
     "body-parser": "1.15.2",
     "express": "4.14.0",
