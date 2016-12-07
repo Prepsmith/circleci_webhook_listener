@@ -18,12 +18,26 @@
 
 example with codeship:
 
+Setup environment to have $BOTNAME and $TARGETHOST in environment variables
+
 ```
 cd clone/
 npm pack
-PACKAGE=`ls pad_sales_tool_webhook-*.tgz`
-scp $PACKAGE deployer@cms.staging.prepsmith.com:
-npm install --production $PACKAGE
+
+PACKAGE=`ls circleci_webhook_listener-*.tgz`
+REMOTE_EXEC="ssh $BOTNAME@$TARGETHOST -C"
+
+scp $PACKAGE $BOTNAME@$TARGETHOST:apps/circleci_webhook_listener/releases/
+
+$REMOTE_EXEC mkdir -p apps/circleci_webhook_listener/releases/ apps/circleci_webhook_listener/current apps/circleci_webhook_listener/shared
+
+$REMOTE_EXEC "cd apps/circleci_webhook_listener/current; cnpm install --production ../releases/$PACKAGE"
+
+$REMOTE_EXEC "cd apps/circleci_webhook_listener/current; ln -s ../shared/settings.json" 
 ```
 
-cnpm install  ./pad_sales_tool_webhook-1.0.0.tgz
+## setup service
+
+use:
+
+https://github.com/nicokaiser/node-monit
