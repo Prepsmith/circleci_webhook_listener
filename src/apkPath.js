@@ -1,4 +1,5 @@
 var fs = require('fs');
+var path = require('path');
 
 var APK_EXTENSION = '.apk'
 
@@ -14,6 +15,6 @@ exports.obtain = function(url, callback){
     fs.mkdir(settings.download_path, null , function(err) {
         if (err && err.code != 'EEXIST'){ throw err}
     });
-
-    callback(null,settings.download_path + '\\' + fileName)
+    console.log('@new1',path.join(settings.download_path, fileName))
+    callback(null,path.join(settings.download_path + '\\' + fileName))
 }
