@@ -1,6 +1,7 @@
+var path = require('path');
 var fs = require('fs');
 
-var SETTINGS_FILE_PATH = process.cwd() + '\\settings.json'
+var SETTINGS_FILE_PATH = path.win32.join(process.cwd(),'\\settings.json')
 
 var generateJson = function(ciToken,vcs,team,projName,port,downloadPath){
 	return '{\n\t\"circle_ci_token\": \"' + 
