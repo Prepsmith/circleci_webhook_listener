@@ -63,3 +63,31 @@ This is the path the webhook listener will download the obtained artifacts to. Y
 "download_path": "{cwd}/downloads/"
 "download_path": "C:\\Users\\ThimoVSS\\circleCIArtifacts"
 ```
+
+## deploying from the ci
+
+example with codeship:
+
+Setup environment to have $BOTNAME and $TARGETHOST in environment variables
+
+```
+cd clone/
+npm pack
+
+PACKAGE=`ls circleci_webhook_listener-*.tgz`
+REMOTE_EXEC="ssh $BOTNAME@$TARGETHOST -C"
+
+scp $PACKAGE $BOTNAME@$TARGETHOST:apps/circleci_webhook_listener/releases/
+
+$REMOTE_EXEC mkdir -p apps/circleci_webhook_listener/releases/ apps/circleci_webhook_listener/current apps/circleci_webhook_listener/shared
+
+$REMOTE_EXEC "cd apps/circleci_webhook_listener/current; cnpm install --production ../releases/$PACKAGE"
+
+$REMOTE_EXEC "cd apps/circleci_webhook_listener/current; ln -s ../shared/settings.json" 
+```
+
+## setup service
+
+use:
+
+https://github.com/nicokaiser/node-monit

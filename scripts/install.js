@@ -1,6 +1,7 @@
 var fs = require('fs');
+var path = require('path');
 
-var SETTINGS_FILE_PATH = process.cwd() + '\\settings.json'
+var SETTINGS_FILE_PATH = path.join(process.cwd(),'settings.json');
 
 var generateJson = function(ciToken,vcs,team,projName,ip,port,downloadPath){
 	return '{\n\t\"circle_ci_token\": \"' + 
@@ -34,6 +35,7 @@ fs.stat(SETTINGS_FILE_PATH,function(err,stats){
 				"{IP}",
 				"{PORT}",
 				"{DOWNLOAD_PATH}");
+			console.log('creating settings.json in ', SETTINGS_FILE_PATH);
 			fs.writeFile(SETTINGS_FILE_PATH,settingsJson,function(err){
 				if (err){console.log('caught error: ', err)} else {
 					console.log("settings.json:")
