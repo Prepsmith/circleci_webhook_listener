@@ -7,7 +7,7 @@ describe('Download', function() {
     downloadPath = path.join(process.cwd(),'\\test\\downloads');
     TEST_PREFIX = 'TEST APK'
     it('downloads sample http file', function(done) {
-        download.start(TEST_PREFIX, 'http://www.brainjar.com/java/host/test.html',downloadPath + '/test.html', false, function(succes){
+        download.start(TEST_PREFIX, 'http://www.brainjar.com/java/host/test.html',path.join(downloadPath,'test.html'), false, function(succes){
             assert(succes,"failed to download bing.com, please check internet connectivity");
             done();
         });
