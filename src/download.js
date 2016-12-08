@@ -2,7 +2,7 @@ var fs = require('fs');
 var request = require('request');
 var requestify = require('requestify');
 var progress = require('request-progress');
-var path = require('path');
+var pathMod = require('path');
 
 var KB_SIZE = 1000
 var MB_SIZE = KB_SIZE * 1000
@@ -15,7 +15,7 @@ exports.start = function (prefix, uri, path, log, callback) {
     if (typeof uri != 'string'){throw new Error('uri is not a string ' + uri); callback(false); return;}
     if (typeof path != 'string'){throw new Error('path is not a string ' + path); callback(false); return;}
     if (!prefix){prefix = DEFAULT_PREFIX}
-    path = path.normalize(path);
+    path = pathMod.normalize(path);
     progress(request(uri))
     .on('progress', 
         function (state) {
