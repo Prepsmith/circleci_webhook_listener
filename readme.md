@@ -9,25 +9,22 @@ This webhook listener awaits webhook notifications from CircleCI, when a notific
 3.	run "npm install"
 
 ## start
-1.	setup CircleCI
-2.	setup settings.json
-2.	navigate to root of repository
-3.	run "node app.js"
+1.	navigate to root of repository
+2.	setup CircleCI
+3.	setup settings.json
+4.	run "npm start"
 
 ## test 
 1.	navigate to root of repository
 2.	run "npm test"
 
 ## setting up circleCI
-
 in your circle.yml file add the following lines
 ```
 notify:
   webhooks:
     - url: {yourWebHookAddress}:{portWebHookListener}/webhook
-
 ```
-
 in your circle.yml file write a copy command for all the files that need to be downloaded, to the $CIRCLE_ARTIFACTS directory, after the lines that build your project. For example and android project:
 ```
 test:
@@ -53,7 +50,7 @@ This is the URL of your circleCI project, it should have this format,
 *	TEAM_NAME is the name of the team this project was created under on CircleCI.
 *	PROJECT_NAME is the name of the project on CircleCI.
 
-TEAM_NAME and PROJECT_NAME can be found when browsing to your project on CircleCI and looking at te url, it should a format like this: "https://circleci.com/gh/{TEAM_NAME}/{PROJECT_NAME}"
+TEAM_NAME and PROJECT_NAME can be found when browsing to your project on CircleCI and looking at the url, it should a format like this: "https://circleci.com/gh/{TEAM_NAME}/{PROJECT_NAME}"
 
 ### port:
 
@@ -64,5 +61,5 @@ This is the port that the webhook listener will listen to, this is the same port
 This is the path the webhook listener will download the obtained artifacts to. You can use "{cwd}", this will be replaced with the root directory of the webhook listener project, for example:
 ```
 "download_path": "{cwd}/downloads/"
-"download_path": "C:\Users\ThimoVSS\circleCIArtifacts"
+"download_path": "C:\\Users\\ThimoVSS\\circleCIArtifacts"
 ```

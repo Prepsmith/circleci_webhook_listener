@@ -2,7 +2,7 @@ var fs = require('fs');
 
 var SETTINGS_FILE_PATH = process.cwd() + '\\settings.json'
 
-var generateJson = function(ciToken,vcs,team,projName,port,downloadPath){
+var generateJson = function(ciToken,vcs,team,projName,ip,port,downloadPath){
 	return '{\n\t\"circle_ci_token\": \"' + 
 	ciToken +
 	'\",\n\t\"circle_ci_url\": \"https://circleci.com/api/v1.1/project/' +
@@ -11,7 +11,9 @@ var generateJson = function(ciToken,vcs,team,projName,port,downloadPath){
 	team +
 	'/' +
 	projName +
-	'/\",\n\t\"port\": ' +
+	'/\",\n\t\"ip\": \"' + 
+	ip +
+	'\",\n\t\"port\": ' +
 	port +
 	',\n\t\"download_path\": \"' +
 	downloadPath +
@@ -29,6 +31,7 @@ fs.stat(SETTINGS_FILE_PATH,function(err,stats){
 				"{github|bitbucket}",
 				"{TEAM_NAME}",
 				"{PROJECT_NAME}",
+				"{IP}",
 				"{PORT}",
 				"{DOWNLOAD_PATH}");
 			fs.writeFile(SETTINGS_FILE_PATH,settingsJson,function(err){
