@@ -6,7 +6,8 @@ var fs = require('fs');
 
 describe('Download', function() {
 
-    downloadPath = path.join(process.cwd(),'test/downloads');
+    downloadPath = path.join(process.cwd(),'test','downloads');
+    TEST_PREFIX = 'TEST APK'
 
     before(function(done){
         fs.mkdir(downloadPath, null , function(err) {
@@ -23,7 +24,6 @@ describe('Download', function() {
         }
     });
     
-    TEST_PREFIX = 'TEST APK'
     it('downloads sample http file', function(done) {
         download.start(TEST_PREFIX, 'http://www.brainjar.com/java/host/test.html',path.join(downloadPath,'test.html'), false, function(succes){
             assert(succes,"failed to download bing.com, please check internet connectivity");

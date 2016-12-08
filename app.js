@@ -23,18 +23,19 @@ var HTTPS_PREFIX = 'https://'
 
 //on start
 console.log("loading settings from settings.json")
-try{
-    settingsLoader.load(SETTINGS_FILE_PATH,function(err,res){
-        if(err){console.log('caught error', err)} else {
-            settings = res;
-            app.listen(settings.port, function () {
-                console.log('Waiting for webhooks from CircleCI on port ' + settings.port)
-            });
-        }
+settingsLoader.load(SETTINGS_FILE_PATH,function(err,res){
+    if(err){console.log('caught error', err); return;}   
+    settings = res;
+    app.listen(settings.port, settings.ip, function (err) {  
+        if(err){console.log('caught error', err); return;}      
+        console.log('Waiting for webhooks from CircleCI on ' + (settings.ip || "any address") + ':' + settings.port);
     });
-}catch (err){
-    console.log('caught error', err);
-}
+}); 
+
+process.on('uncaughtException', function(err){
+    if(err.code == 'EADDRNOTAVAIL'){console.log('caught error: address ' + err.address + ' was not available.'); return;}
+    console.log('uncaught error:', err)
+});
 
 var getUrlFromBody = function(body,callback){
     if (!body){callback(new Error('body was a null, body:' + body)); return;}
@@ -66,8 +67,8 @@ app.post('/webhook', function(req, res){
                             });
                         });
                     });
-                }).fail(function(response) {
-                    console.log('error caught: ' + response)
+                }).fail(function(err) {
+                    console.log('error whilst downloading, error code ' + err.code)
                 });
             } else {
                 console.log('not downloading ' + build_number + ' as build failed.')

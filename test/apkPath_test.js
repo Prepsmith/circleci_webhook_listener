@@ -5,7 +5,7 @@ var path = require('path');
 describe('apkPath', function() {
     before(function(){
         settings = {}
-        settings.download_path = path.win32.join(process.cwd(),'\\test\\downloads');
+        settings.download_path = path.join(process.cwd(), 'test', 'downloads');
     });
 
 	it('obtain works with correct input', function() {
@@ -24,7 +24,7 @@ describe('apkPath', function() {
     		apkPath.obtain('') 
     	}, Error,'obtainAPKpath allowed a link without \'https://\'');
     });
-    it('obtain doesn\'t work when there is apk file in the path', function() {
+    it('obtain doesn\'t work when there is no apk file in the path', function() {
     	assert.throws(function(){ 
     		apkPath.obtain('https://url.com/test/apk/applicationName.rar') 
     	}, Error,'obtainAPKpath allowed a path with no .apk');
