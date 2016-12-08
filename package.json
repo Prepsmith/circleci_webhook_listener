@@ -9,7 +9,6 @@
   "dependencies": {
     "body-parser": "1.15.2",
     "express": "4.14.0",
-    "promise": "^7.1.1",
     "request": "2.79.0",
     "request-progress": "2.0.1",
     "requestify": "0.2.5"
