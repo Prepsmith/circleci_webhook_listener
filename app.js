@@ -16,7 +16,7 @@ var artifactsUrl = require('./src/artifactsUrl');
 
 settings = {}
 
-var SETTINGS_FILE_PATH = '/settings.json'
+var SETTINGS_FILE_PATH = 'settings.json'
 var HTTP_SUCCES = 200
 var HTTP_INTERNAL_SERVER_ERROR = 500
 var HTTPS_PREFIX = 'https://'
