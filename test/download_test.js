@@ -1,10 +1,28 @@
 var assert = require('assert');
 var download = require('../src/download');
+var remove = require('remove');
 var path = require('path');
+var fs = require('fs');
 
 describe('Download', function() {
 
     downloadPath = path.join(process.cwd(),'test/downloads');
+
+    before(function(done){
+        fs.mkdir(downloadPath, null , function(err) {
+            if (err && err.code != 'EEXIST'){console.log('caught error: ', err)}
+            done();
+        });
+    });
+
+    after(function() { 
+        try {
+            remove.removeSync(downloadPath);
+        } catch (err) {
+            console.error('caught error: ', err);
+        }
+    });
+    
     TEST_PREFIX = 'TEST APK'
     it('downloads sample http file', function(done) {
         download.start(TEST_PREFIX, 'http://www.brainjar.com/java/host/test.html',path.join(downloadPath,'test.html'), false, function(succes){
