@@ -7,7 +7,7 @@ var DEFAULT_DOWNLOAD_PATH = path.join(process.cwd(),'downloads');
 exports.DEFAULT_DOWNLOAD_PATH = DEFAULT_DOWNLOAD_PATH
 
 exports.load = function(settingsPath, callback){
-    fs.readFile(process.cwd() + settingsPath, 'utf8', function (err,data) {
+    fs.readFile(path.join(process.cwd(),settingsPath), 'utf8', function (err,data) {
         if (err) { callback(err); return;}
         res = JSON.parse(data);
         if (!res.circle_ci_token){callback(new Error('field \"circle_ci_token\" was not found in settings.json')); return;}
@@ -20,7 +20,7 @@ exports.load = function(settingsPath, callback){
             console.log('download_path field was not found in settings.json, using\n' + DEFAULT_DOWNLOAD_PATH + '\nas default') 
             res.download_path = DEFAULT_DOWNLOAD_PATH
         } else {
-            res.download_path = path.dirname(res.download_path.replace(/{cwd}/g, process.cwd()))
+            res.download_path = res.download_path.replace(/{cwd}/g, process.cwd());
         }
         if(!res.ip){
             console.log('ip was not found in settings.json, allowing requests from all addresses')

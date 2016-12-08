@@ -1,5 +1,6 @@
 var assert = require('assert');
 var apkPath = require('../src/apkPath');
+var path = require('path');
 
 describe('apkPath', function() {
     before(function(){
@@ -23,7 +24,7 @@ describe('apkPath', function() {
     		apkPath.obtain('') 
     	}, Error,'obtainAPKpath allowed a link without \'https://\'');
     });
-    it('obtain doesn\'t work when there is apk file in the path', function() {
+    it('obtain doesn\'t work when there is no apk file in the path', function() {
     	assert.throws(function(){ 
     		apkPath.obtain('https://url.com/test/apk/applicationName.rar') 
     	}, Error,'obtainAPKpath allowed a path with no .apk');
