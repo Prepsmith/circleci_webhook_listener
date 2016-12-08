@@ -4,7 +4,7 @@ var apkPath = require('../src/apkPath');
 describe('apkPath', function() {
     before(function(){
         settings = {}
-        settings.download_path = process.cwd() + '\\test\\downloads';
+        settings.download_path = path.join(process.cwd(), 'test', 'downloads');
     });
 
 	it('obtain works with correct input', function() {
