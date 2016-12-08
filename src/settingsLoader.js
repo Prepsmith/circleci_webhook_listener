@@ -24,8 +24,8 @@ exports.load = function(settingsPath, callback){
         } else {
             res.download_path = res.download_path.replace(/{cwd}/g, process.cwd());
         }
-        if(!res.ip){
-            console.log('ip was not found in settings.json, allowing requests from all addresses')
+        if(!res.hostName){
+            console.log('hostName was not found in settings.json, allowing requests from all addresses')
         }
         console.log('successfully loaded settings');
         callback(null,res);

@@ -52,6 +52,9 @@ This is the URL of your circleCI project, it should have this format,
 
 TEAM_NAME and PROJECT_NAME can be found when browsing to your project on CircleCI and looking at the url, it should a format like this: "https://circleci.com/gh/{TEAM_NAME}/{PROJECT_NAME}"
 
+### hostName:
+This is the hostname the webhook listener will listen to, if null or not present it will listen to all addresses on the given port.
+
 ### port:
 
 This is the port that the webhook listener will listen to, this is the same port that you have to enter in the circle.yml file in the line {yourWebHookAddress}:{thisPort}/webhook

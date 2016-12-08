@@ -4,7 +4,7 @@ var path = require('path');
 
 var SETTINGS_FILE_PATH = path.join(process.cwd(),'settings.json');
 
-var generateJson = function(ciToken,vcs,team,projName,ip,port,downloadPath){
+var generateJson = function(ciToken,vcs,team,projName,hostName,port,downloadPath){
 	return '{\n\t\"circle_ci_token\": \"' + 
 	ciToken +
 	'\",\n\t\"circle_ci_url\": \"https://circleci.com/api/v1.1/project/' +
@@ -13,8 +13,8 @@ var generateJson = function(ciToken,vcs,team,projName,ip,port,downloadPath){
 	team +
 	'/' +
 	projName +
-	'/\",\n\t\"ip\": \"' + 
-	ip +
+	'/\",\n\t\"hostName\": \"' + 
+	hostName +
 	'\",\n\t\"port\": ' +
 	port +
 	',\n\t\"download_path\": \"' +
@@ -33,7 +33,7 @@ fs.stat(SETTINGS_FILE_PATH,function(err,stats){
 				"{github|bitbucket}",
 				"{TEAM_NAME}",
 				"{PROJECT_NAME}",
-				"{IP}",
+				"{HOSTNAME}",
 				"{PORT}",
 				"{DOWNLOAD_PATH}");
 			console.log('creating settings.json in ', SETTINGS_FILE_PATH);

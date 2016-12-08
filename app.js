@@ -26,9 +26,9 @@ console.log("loading settings from settings.json")
 settingsLoader.load(SETTINGS_FILE_PATH,function(err,res){
     if(err){console.log('caught error', err); return;}   
     settings = res;
-    app.listen(settings.port, settings.ip, function (err) {  
+    app.listen(settings.port, settings.hostName, function (err) {  
         if(err){console.log('caught error', err); return;}      
-        console.log('Waiting for webhooks from CircleCI on ' + (settings.ip || "any address") + ':' + settings.port);
+        console.log('Waiting for webhooks from CircleCI on ' + (settings.hostName || "any address") + ':' + settings.port);
     });
 }); 
 
