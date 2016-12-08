@@ -14,13 +14,13 @@ describe('Download', function() {
     });
     it('doesn\'t work when there is no uri', function() {
         assert.throws(function(){ 
-            download.start(TEST_PREFIX, null,downloadPath + '/bing.html', false, function(succes){
+            download.start(TEST_PREFIX, null,path.join(downloadPath,'bing.html'), false, function(succes){
                 assert(false,"failed to download bing.com");
                 done();
             });
         }, Error,'download allowed a download without uri');
         assert.throws(function(){ 
-            download.start(TEST_PREFIX, '',downloadPath + '/bing.html', false, function(succes){
+            download.start(TEST_PREFIX, '',path.join(downloadPath,'/bing.html'), false, function(succes){
                 assert(false,"failed to download bing.com");
                 done();
             });
