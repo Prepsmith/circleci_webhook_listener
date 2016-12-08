@@ -4,7 +4,7 @@ var path = require('path');
 
 describe('Download', function() {
 
-    downloadPath = path.join(process.cwd(),'\\test\\downloads');
+    downloadPath = path.join(process.cwd(),'test/downloads');
     TEST_PREFIX = 'TEST APK'
     it('downloads sample http file', function(done) {
         download.start(TEST_PREFIX, 'http://www.brainjar.com/java/host/test.html',path.join(downloadPath,'test.html'), false, function(succes){
