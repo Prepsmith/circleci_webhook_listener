@@ -42,3 +42,5 @@ downloads/
 # Settings
 settings.json
 *.apk
+
+circleci_webhook_listener-*.tgz

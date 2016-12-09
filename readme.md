@@ -86,7 +86,7 @@ $REMOTE_EXEC mkdir -p apps/circleci_webhook_listener/releases/ apps/circleci_web
 
 $REMOTE_EXEC "cd apps/circleci_webhook_listener/current; cnpm install --production ../releases/$PACKAGE"
 
-$REMOTE_EXEC "cd apps/circleci_webhook_listener/current; ln -s ../shared/settings.json" 
+$REMOTE_EXEC "cd apps/circleci_webhook_listener/current; ln -sf ../shared/settings.json"
 ```
 
 ## setup service
