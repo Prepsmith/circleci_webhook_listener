@@ -25,7 +25,7 @@ notify:
   webhooks:
     - url: {yourWebHookAddress}:{portWebHookListener}/webhook
 ```
-in your circle.yml file write a copy command for all the files that need to be downloaded, to the $CIRCLE_ARTIFACTS directory, after the lines that build your project. For example and android project:
+in your circle.yml file write a copy command for all the files that need to be downloaded, to the $CIRCLE_ARTIFACTS directory, after the lines that build your project. For example an android project:
 ```
 test:
   override:
